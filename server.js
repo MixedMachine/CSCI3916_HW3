@@ -5,7 +5,7 @@ Description: Web API scaffolding for Movie API
  */
 
 let express = require('express');
-let http = require('http');
+// let http = require('http');
 let bodyParser = require('body-parser');
 let passport = require('passport');
 // let authController = require('./auth');
@@ -53,7 +53,7 @@ router.post('/signup', function(req, res) {
         user.password = req.body.password;
         user.save(function(err){
             if (err) {
-                if (err.code == 11000)
+                if (err.code === 11000)
                     return res.json({success: false, message: "A user with that username already exists."});
                 else
                     return res.json(err);
@@ -104,7 +104,7 @@ router.route('/movies')
         newMovie.genre = req.body.genre;
         newMovie.actors = req.body.actors;
 
-        // db.saveMovie(movie); | interact with db
+        // Save the movie to mongoDB
         newMovie.save(function(err){
             if (err) {
                 return res.json(err);
