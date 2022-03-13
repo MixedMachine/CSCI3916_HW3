@@ -8,11 +8,12 @@ let express = require('express');
 let http = require('http');
 let bodyParser = require('body-parser');
 let passport = require('passport');
-let authController = require('./auth');
+// let authController = require('./auth');
 let authJwtController = require('./auth_jwt');
 let jwt = require('jsonwebtoken');
 let cors = require('cors');
 let User = require('./Users');
+let Movie = require('./Movies');
 
 let app = express();
 app.use(cors());
@@ -96,12 +97,23 @@ router.route('/movies')
     .post(authJwtController.isAuthenticated, function(req, res){ // Create
         console.log("PST| ", req.body);
         res = res.status(200);
-        let o = getJSONObjectForMovieRequirement(req);
-        // db.saveMovie(movie); | interact with db
-        // check successful db action
-        o.message = "movie saved";
-        res.json(o);
 
+        let newMovie = new Movie();
+        newMovie.title = req.body.title;
+        newMovie.year = req.body.year;
+        newMovie.genre = req.body.genre;
+        newMovie.actors = req.body.actors;
+
+        // db.saveMovie(movie); | interact with db
+        newMovie.save(function(err){
+            if (err) {
+                return res.json(err);
+            }
+
+            let o = getJSONObjectForMovieRequirement(req);
+            o.message = "Movie saved successfully";
+            res.json(o);
+        })
     })
     .get(authJwtController.isAuthenticated, function(req, res){ // Retrieve
         console.log("GET| ", req.body);
