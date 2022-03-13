@@ -4,7 +4,7 @@ let Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
 try {
-    mongoose.connect( `${process.env.DB}${process.env.MOVIES_COL}`, {useNewUrlParser: true, useUnifiedTopology: true}, () =>
+    mongoose.connect( `${process.env.DB}Movies`, {useNewUrlParser: true, useUnifiedTopology: true}, () =>
         console.log("connected"));
 }catch (error) {
     console.log("could not connect");
