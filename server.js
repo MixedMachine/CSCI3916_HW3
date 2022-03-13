@@ -118,11 +118,16 @@ router.route('/movies')
     .get(authJwtController.isAuthenticated, function(req, res){ // Retrieve
         console.log("GET| ", req.body);
         res = res.status(200)
-        let o = getJSONObjectForMovieRequirement(req);
-        // db.findMovie(movie); | interact with db
-        // check successful db action
-        o.message = "GET movies";
-        res.json(o);
+
+        Movie.find(req.body.JSON).exec(function(err, movies) {
+            if (err) {
+                res.send(err);
+            }
+            let o = getJSONObjectForMovieRequirement(req);
+            o.message = "GET movies";
+            o.data = movies;
+            res.json(o);
+        });
     })
     .put(authJwtController.isAuthenticated, function(req, res){ // Update
         console.log("PUT|", req.body);
