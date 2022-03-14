@@ -104,12 +104,16 @@ router.route('/movies')
         newMovie.genre = req.body.genre;
         newMovie.actors = req.body.actors;
 
-        let oldMovie = Movie.find(newMovie).exec();
-        if (!(oldMovie.length === 0 )) {
-            console.log("oldMovie:");
-            console.log(oldMovie);
-            return res.json({success: false, message: "Movie already exists."});
-        }
+        Movie.find(newMovie).exec(function(err, movies) {
+            if (err) {
+                res.send(err);
+            }
+            if (!(movies.length === 0)) {
+                console.log("oldMovie:");
+                console.log(oldMovie);
+                return res.json({success: false, message: "Movie already exists."});
+            }
+        });
         // Save the movie to mongoDB
         newMovie.save(function(err){
             if (err) {
