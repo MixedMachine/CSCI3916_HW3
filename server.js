@@ -104,6 +104,10 @@ router.route('/movies')
         newMovie.genre = req.body.genre;
         newMovie.actors = req.body.actors;
 
+        oldMovie = Movie.find(newMovie)
+        if (oldMovie) {
+            return res.json({success: false, message: "Movie already exists."});
+        }
         // Save the movie to mongoDB
         newMovie.save(function(err){
             if (err) {
@@ -112,6 +116,7 @@ router.route('/movies')
 
             let o = getJSONObjectForMovieRequirement(req);
             o.message = "Movie saved successfully";
+            o.success = true;
             res.json(o);
         })
     })
@@ -119,33 +124,44 @@ router.route('/movies')
         console.log("GET| ", req.body);
         res = res.status(200)
 
-        Movie.find(req.body.JSON).exec(function(err, movies) {
+        Movie.find(req.body.JSON).select("title year genre actors").exec(function(err, movies) {
             if (err) {
                 res.send(err);
             }
             let o = getJSONObjectForMovieRequirement(req);
             o.message = "GET movies";
             o.data = movies;
+            o.success = true;
             res.json(o);
         });
     })
     .put(authJwtController.isAuthenticated, function(req, res){ // Update
         console.log("PUT|", req.body);
         res = res.status(200);
-        let o = getJSONObjectForMovieRequirement(req);
-        // db.updateMovie(movie); | interact with db
-        // check successful db action
-        o.message = "movie updated";
-        res.json(o);
+        Movie.findOneAndUpdate(req.body.JSON).select("title year genre actors").exec(function(err, movies) {
+            if (err) {
+                res.send(err);
+            }
+            let o = getJSONObjectForMovieRequirement(req);
+            o.message = "Movie updated";
+            o.data = movies;
+            o.success = true;
+            res.json(o);
+        });
     })
     .delete(authJwtController.isAuthenticated, function(req, res) { // Delete
         console.log("DEL| ", req.body);
         res = res.status(200)
-        let o = getJSONObjectForMovieRequirement(req);
-        // db.deleteMovie(movie); | interact with db
-        // check successful db action
-        o.message = "movie deleted";
-        res.json(o);
+        Movie.findOneAndDelete(req.body.JSON).select("title year genre actors").exec(function(err, movies) {
+            if (err) {
+                res.send(err);
+            }
+            let o = getJSONObjectForMovieRequirement(req);
+            o.message = "Movie deleted";
+            o.data = movies;
+            o.success = true;
+            res.json(o);
+        });
     });
 /***********************************************************************************************************************
  ***********************************************************************************************************************/
