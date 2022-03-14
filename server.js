@@ -110,7 +110,7 @@ router.route('/movies')
             }
             if (!(movies.length === 0)) {
                 console.log("oldMovie:");
-                console.log(oldMovie);
+                console.log(movies);
                 return res.json({success: false, message: "Movie already exists."});
             }
         });
