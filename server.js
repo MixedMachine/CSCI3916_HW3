@@ -104,7 +104,7 @@ router.route('/movies')
         newMovie.genre = req.body.genre;
         newMovie.actors = req.body.actors;
 
-        let oldMovie = Movie.find(newMovie)
+        let oldMovie = Movie.find(newMovie).exec();
         if (!(oldMovie.length === 0 )) {
             console.log("oldMovie:");
             console.log(oldMovie);
