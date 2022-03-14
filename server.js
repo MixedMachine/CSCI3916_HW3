@@ -143,7 +143,7 @@ router.route('/movies')
     .put(authJwtController.isAuthenticated, function(req, res){ // Update
         console.log("PUT|", req.body);
         res = res.status(200);
-        Movie.findOneAndUpdate(req.body.JSON,req.body.JSON).select("title year genre actors").exec(function(err, movies) {
+        Movie.findOneAndUpdate(req.body.JSON,{ $set: req.body.JSON }).select("title year genre actors").exec(function(err, movies) {
             if (err) {
                 res.send(err);
             }
