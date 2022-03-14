@@ -106,6 +106,8 @@ router.route('/movies')
 
         let oldMovie = Movie.find(newMovie)
         if (!(oldMovie.length === 0 )) {
+            console.log("oldMovie:");
+            console.log(oldMovie);
             return res.json({success: false, message: "Movie already exists."});
         }
         // Save the movie to mongoDB
