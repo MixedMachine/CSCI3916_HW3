@@ -108,12 +108,13 @@ router.route('/movies')
             if (err) {
                 res.send(err);
             }
+            console.log("oldMovie:");
+            console.log(movies);
             if (!(movies.length === 0)) {
-                console.log("oldMovie:");
-                console.log(movies);
                 return res.json({success: false, message: "Movie already exists."});
             }
         });
+
         // Save the movie to mongoDB
         newMovie.save(function(err){
             if (err) {
