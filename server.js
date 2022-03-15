@@ -90,14 +90,14 @@ router.post('/signin', function (req, res) {
 
 /***********************************************************************************************************************
  * Movie routing that supports authentication and CRUD operations to a storage interface.
- * *PUT requires JWT Authentication
- * *DELETE requires Basic Auth
+ * *ALL CRUD Operations require JWT Authentication
  **********************************************************************************************************************/
 router.route('/movies')
     .post(authJwtController.isAuthenticated, function(req, res){ // Create
         console.log("PST| ", req.body);
         res = res.status(200);
 
+        // create new movie from request body
         let newMovie = new Movie();
         newMovie.title = req.body.title;
         newMovie.year = req.body.year;
@@ -120,6 +120,7 @@ router.route('/movies')
         console.log("GET| ", req.body);
         res = res.status(200);
 
+        // search in DB using body as filter
         Movie.find(req.body).select("title year genre actors").exec(function(err, movies) {
             if (err) {
                 res.send(err);
@@ -135,6 +136,7 @@ router.route('/movies')
         console.log("PUT|", req.body);
         res = res.status(200);
 
+        // uses body "find" key for query filter and "update" for the update data
         Movie.findOneAndUpdate(req.body.find,{ $set: req.body.update }).exec(function(err, movies) {
             if (err) {
                 res.send(err);
@@ -148,6 +150,8 @@ router.route('/movies')
     .delete(authJwtController.isAuthenticated, function(req, res) { // Delete
         console.log("DEL| ", req.body);
         res = res.status(200);
+
+        // deletes single movie based off filter
         Movie.findOneAndDelete(req.body).exec(function(err, movies) {
             if (err) {
                 res.send(err);
