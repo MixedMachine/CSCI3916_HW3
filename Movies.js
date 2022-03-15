@@ -18,5 +18,7 @@ let MovieSchema = new Schema({
     actors: [{actorName: String, characterName: String}]
 });
 
+MovieSchema.index({title: 1, year: 1},{unique: true})
+
 //return the model to server
 module.exports = mongoose.model('Movie', MovieSchema);

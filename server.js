@@ -104,29 +104,17 @@ router.route('/movies')
         newMovie.genre = req.body.genre;
         newMovie.actors = req.body.actors;
 
-        Movie.find(newMovie).exec(function(err, movies) {
+        // Save the movie to mongoDB
+        newMovie.save(function(err){
             if (err) {
-                res.send(err);
+                return res.json(err);
             }
 
-            if (!(movies == null)) {
-                if (!(movies.length === 0)) {
-                    return res.json({success: false, message: "Movie already exists."});
-                }
-            }
-            // Save the movie to mongoDB
-            newMovie.save(function(err){
-                if (err) {
-                    return res.json(err);
-                }
-
-                let o = getJSONObjectForMovieRequirement(req);
-                o.message = "Movie saved successfully";
-                o.success = true;
-                res.json(o);
-            })
+            let o = getJSONObjectForMovieRequirement(req);
+            o.message = "Movie saved successfully";
+            o.success = true;
+            res.json(o);
         });
-
     })
     .get(authJwtController.isAuthenticated, function(req, res){ // Retrieve
         console.log("GET| ", req.body);
