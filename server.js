@@ -120,7 +120,7 @@ router.route('/movies')
         console.log("GET| ", req.body);
         res = res.status(200);
 
-        Movie.find(req.body.JSON).select("title year genre actors").exec(function(err, movies) {
+        Movie.find(req.body).select("title year genre actors").exec(function(err, movies) {
             if (err) {
                 res.send(err);
             }
@@ -148,7 +148,7 @@ router.route('/movies')
     .delete(authJwtController.isAuthenticated, function(req, res) { // Delete
         console.log("DEL| ", req.body);
         res = res.status(200);
-        Movie.findOneAndDelete(req.body.JSON).exec(function(err, movies) {
+        Movie.findOneAndDelete(req.body).exec(function(err, movies) {
             if (err) {
                 res.send(err);
             }
