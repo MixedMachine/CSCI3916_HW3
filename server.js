@@ -118,7 +118,7 @@ router.route('/movies')
     })
     .get(authJwtController.isAuthenticated, function(req, res){ // Retrieve
         console.log("GET| ", req.body);
-        res = res.status(200)
+        res = res.status(200);
 
         Movie.find(req.body.JSON).select("title year genre actors").exec(function(err, movies) {
             if (err) {
@@ -135,7 +135,7 @@ router.route('/movies')
         console.log("PUT|", req.body);
         res = res.status(200);
 
-        Movie.findOneAndUpdate(req.body.query,{ $set: req.body.update }).exec(function(err, movies) {
+        Movie.findOneAndUpdate(req.body.find,{ $set: req.body.update }).exec(function(err, movies) {
             if (err) {
                 res.send(err);
             }
@@ -147,8 +147,8 @@ router.route('/movies')
     })
     .delete(authJwtController.isAuthenticated, function(req, res) { // Delete
         console.log("DEL| ", req.body);
-        res = res.status(200)
-        Movie.findOneAndDelete(req.body.JSON).select("title year genre actors").exec(function(err, movies) {
+        res = res.status(200);
+        Movie.findOneAndDelete(req.body.JSON).exec(function(err, movies) {
             if (err) {
                 res.send(err);
             }
