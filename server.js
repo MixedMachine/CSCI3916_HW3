@@ -135,7 +135,9 @@ router.route('/movies')
         console.log("PUT|", req.body);
         res = res.status(200);
         let body = req.body.JSON;
-        Movie.findOneAndUpdate(body.Query,{ $set: body.Update }).select("title year genre actors").exec(function(err, movies) {
+        let q = body.query;
+        let u = body.update;
+        Movie.findOneAndUpdate(q,{ $set: u }).exec(function(err, movies) {
             if (err) {
                 res.send(err);
             }
