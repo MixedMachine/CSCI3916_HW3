@@ -114,19 +114,19 @@ router.route('/movies')
                     return res.json({success: false, message: "Movie already exists."});
                 }
             }
+            // Save the movie to mongoDB
+            newMovie.save(function(err){
+                if (err) {
+                    return res.json(err);
+                }
+
+                let o = getJSONObjectForMovieRequirement(req);
+                o.message = "Movie saved successfully";
+                o.success = true;
+                res.json(o);
+            })
         });
 
-        // Save the movie to mongoDB
-        newMovie.save(function(err){
-            if (err) {
-                return res.json(err);
-            }
-
-            let o = getJSONObjectForMovieRequirement(req);
-            o.message = "Movie saved successfully";
-            o.success = true;
-            res.json(o);
-        })
     })
     .get(authJwtController.isAuthenticated, function(req, res){ // Retrieve
         console.log("GET| ", req.body);
