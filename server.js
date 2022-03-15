@@ -108,8 +108,11 @@ router.route('/movies')
             if (err) {
                 res.send(err);
             }
-            if (!(movies.length === 0)) {
-                return res.json({success: false, message: "Movie already exists."});
+
+            if (!(movies == null)) {
+                if (!(movies.length === 0)) {
+                    return res.json({success: false, message: "Movie already exists."});
+                }
             }
         });
 
