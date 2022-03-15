@@ -134,10 +134,8 @@ router.route('/movies')
     .put(authJwtController.isAuthenticated, function(req, res){ // Update
         console.log("PUT|", req.body);
         res = res.status(200);
-        let body = req.body.JSON;
-        let q = body.get("query");
-        let u = body.get("update");
-        Movie.findOneAndUpdate(q,{ $set: u }).exec(function(err, movies) {
+
+        Movie.findOneAndUpdate(req.body.query,{ $set: req.body.update }).exec(function(err, movies) {
             if (err) {
                 res.send(err);
             }
