@@ -135,8 +135,8 @@ router.route('/movies')
         console.log("PUT|", req.body);
         res = res.status(200);
         let body = req.body.JSON;
-        let q = body.query;
-        let u = body.update;
+        let q = body.get("query");
+        let u = body.get("update");
         Movie.findOneAndUpdate(q,{ $set: u }).exec(function(err, movies) {
             if (err) {
                 res.send(err);
